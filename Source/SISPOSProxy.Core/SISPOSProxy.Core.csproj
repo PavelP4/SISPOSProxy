@@ -44,14 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\UdfMessageCache.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Helpers\DbConnection.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
+    <Compile Include="Models\UdfTagMsgModel.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\UdfTagMsgParser.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receivers\DbReceiver.cs" />
+    <Compile Include="Receivers\SISPOSReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cache\" />
+    <Folder Include="Transmitters\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
