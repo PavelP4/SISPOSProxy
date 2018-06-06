@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using SISPOSProxy.Core;
 
 namespace SISPOSProxy.Service
 {
@@ -15,6 +16,8 @@ namespace SISPOSProxy.Service
     /// </summary>
     public partial class MainService : ServiceBase
     {
+        private readonly Proxy _proxy;
+
         public MainService()
         {
             InitializeComponent();
@@ -22,6 +25,8 @@ namespace SISPOSProxy.Service
             CanStop = true;
             CanPauseAndContinue = false;
             AutoLog = true;
+
+            _proxy = new Proxy();
         }
 
         public void Start()
@@ -31,10 +36,12 @@ namespace SISPOSProxy.Service
 
         protected override void OnStart(string[] args)
         {
+            _proxy.Start();
         }
 
         protected override void OnStop()
         {
+            _proxy.Stop();
         }
 
         //protected void AddLog(string log)

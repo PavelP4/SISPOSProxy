@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SISPOSProxy.Service", "SISPOSProxy.Service\SISPOSProxy.Service.csproj", "{93C8DE82-094D-4939-9C8E-E37D7CC5C6FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SISPOSProxy.Core", "SISPOSProxy.Core\SISPOSProxy.Core.csproj", "{4077166D-B0E3-4088-A82B-086DB862DD67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{93C8DE82-094D-4939-9C8E-E37D7CC5C6FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93C8DE82-094D-4939-9C8E-E37D7CC5C6FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93C8DE82-094D-4939-9C8E-E37D7CC5C6FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4077166D-B0E3-4088-A82B-086DB862DD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4077166D-B0E3-4088-A82B-086DB862DD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4077166D-B0E3-4088-A82B-086DB862DD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4077166D-B0E3-4088-A82B-086DB862DD67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

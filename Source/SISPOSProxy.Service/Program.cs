@@ -14,13 +14,13 @@ namespace SISPOSProxy.Service
         /// </summary>
         static void Main()
         {
-            //new MainService().Start();
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
-            {
-                new MainService()
-            };
-            ServiceBase.Run(ServicesToRun);
+            new MainService().Start();
+            //ServiceBase[] ServicesToRun;
+            //ServicesToRun = new ServiceBase[]
+            //{
+            //    new MainService()
+            //};
+            //ServiceBase.Run(ServicesToRun);
         }
     }
 }

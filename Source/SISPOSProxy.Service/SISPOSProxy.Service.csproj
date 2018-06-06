@@ -89,5 +89,11 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SISPOSProxy.Core\SISPOSProxy.Core.csproj">
+      <Project>{4077166d-b0e3-4088-a82b-086db862dd67}</Project>
+      <Name>SISPOSProxy.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
