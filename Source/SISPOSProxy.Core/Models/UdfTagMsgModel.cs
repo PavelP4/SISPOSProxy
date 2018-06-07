@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SISPOSProxy.Core.Enums;
 
 namespace SISPOSProxy.Core.Models
 {
     class UdfTagMsgModel
     {
-        public string MessageType { get; set; }
+        public UdfMessageType MessageType => UdfMessageType.TagMsg;
         public int TagId { get; set; }
-        public int TagStatus { get; set; }
+        public TagStatus TagStatus { get; set; }
     }
 }

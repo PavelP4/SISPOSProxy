@@ -44,12 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\UdfMessageCache.cs" />
+    <Compile Include="Caches\DbCache.cs" />
+    <Compile Include="Caches\UdfMessageCache.cs" />
     <Compile Include="Config\Settings.cs" />
+    <Compile Include="Enums\SectorStatus.cs" />
+    <Compile Include="Enums\TagStatus.cs" />
+    <Compile Include="Enums\UdfMessageType.cs" />
+    <Compile Include="Extentions\ArrayExt.cs" />
     <Compile Include="Helpers\DbConnection.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
+    <Compile Include="Models\UdfPosMsgModel.cs" />
+    <Compile Include="Models\UdfSecMsgModel.cs" />
     <Compile Include="Models\UdfTagMsgModel.cs" />
     <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\UdfMsgParser.cs" />
+    <Compile Include="Parsers\UdfSecMsgParser.cs" />
+    <Compile Include="Parsers\UdfPosMsgParser.cs" />
     <Compile Include="Parsers\UdfTagMsgParser.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

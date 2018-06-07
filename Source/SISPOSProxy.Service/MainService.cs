@@ -42,6 +42,7 @@ namespace SISPOSProxy.Service
         protected override void OnStop()
         {
             _proxy.Stop();
+            _proxy.Dispose();
         }
 
         //protected void AddLog(string log)
