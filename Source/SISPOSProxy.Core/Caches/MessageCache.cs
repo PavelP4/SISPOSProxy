@@ -2,11 +2,11 @@
 
 namespace SISPOSProxy.Core.Caches
 {
-    class UdfMessageCache
+    public class MessageCache
     {
         private readonly ConcurrentQueue<byte[]> _queue;
 
-        public UdfMessageCache()
+        public MessageCache()
         {
             _queue = new ConcurrentQueue<byte[]>();
         }
@@ -18,7 +18,7 @@ namespace SISPOSProxy.Core.Caches
 
         public byte[] Pop()
         {
-            if (_queue.TryDequeue(out byte[] result))
+            if (_queue.TryDequeue(out var result))
             {
                 return result;
             }

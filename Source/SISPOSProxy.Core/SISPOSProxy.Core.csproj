@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caches\DbCache.cs" />
-    <Compile Include="Caches\UdfMessageCache.cs" />
+    <Compile Include="Caches\MessageCache.cs" />
+    <Compile Include="Caches\UdpProcessCache.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Enums\SectorStatus.cs" />
     <Compile Include="Enums\TagStatus.cs" />
@@ -63,12 +64,14 @@
     <Compile Include="Parsers\UdfTagMsgParser.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Receivers\DbReceiver.cs" />
-    <Compile Include="Receivers\SISPOSReceiver.cs" />
+    <Compile Include="Services\BaseProcessService.cs" />
+    <Compile Include="Services\DbReceiver.cs" />
+    <Compile Include="Services\SISPOSDataProcessor.cs" />
+    <Compile Include="Services\SISPOSReceiver.cs" />
+    <Compile Include="Services\UdpRepairService.cs" />
+    <Compile Include="Services\SISPOSTransmitter.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Transmitters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

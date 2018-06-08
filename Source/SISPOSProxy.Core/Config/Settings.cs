@@ -12,7 +12,7 @@ namespace SISPOSProxy.Core.Config
     {
         #region udp settings
 
-        public IList<IPEndPoint> ListenIpEndPoints { get; private set; }
+        public IPEndPoint ListenIpEndPoint { get; private set; }
         public IList<IPEndPoint> TransmitIpEndPoints { get; private set; }
 
         #endregion udp settings
@@ -29,21 +29,21 @@ namespace SISPOSProxy.Core.Config
         {
             var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
 
-            ListenIpEndPoints = await GetListenIpEndPointsAsync(localIpAddress);
+            ListenIpEndPoint = await GetListenIpEndPointAsync(localIpAddress);
             TransmitIpEndPoints = await GetTransmitIpEndPointsAsync();
 
             await InitFromProxySettingsAsync();
         }
 
-        private async Task<IList<IPEndPoint>> GetListenIpEndPointsAsync(IPAddress ipaddress)
+        private async Task<IPEndPoint> GetListenIpEndPointAsync(IPAddress ipaddress)
         {
-            var result = new List<IPEndPoint>();
-
             using (var conn = DbConnection.NewInstance())
             {
-                var sql = "SELECT port FROM ilasst";
+                var sql = "SELECT port FROM ilasst WHERE address = @address";
                 var cmd = new MySqlCommand(sql, conn);
-                
+
+                cmd.Parameters.AddWithValue("@address", ipaddress.ToString());
+
                 await conn.OpenAsync();
 
                 using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection))
@@ -52,7 +52,7 @@ namespace SISPOSProxy.Core.Config
                     {
                         if (int.TryParse(reader.GetString(0), out int port))
                         {
-                            result.Add(new IPEndPoint(ipaddress, port));
+                            return new IPEndPoint(ipaddress, port);
                         }
                     }
                 }
@@ -60,7 +60,7 @@ namespace SISPOSProxy.Core.Config
                 await conn.CloseAsync();
             }
 
-            return result;
+            return null;
         }
 
         private async Task<IList<IPEndPoint>> GetTransmitIpEndPointsAsync()
