@@ -1,6 +1,6 @@
 ﻿namespace SISPOSProxy.Core.Enums
 {
-    enum SectorStatus
+    public enum SectorStatus
     {
         Undefined = -1,
         Ok = 0,

@@ -10,7 +10,7 @@ namespace SISPOSProxy.Core.Parsers
         {
             [UdfMessageType.TagMsg] = new [] { Convert.ToByte('T'), Convert.ToByte('A'), Convert.ToByte('G'), (byte)0 },
             [UdfMessageType.PosMsg] = new [] { Convert.ToByte('P'), Convert.ToByte('O'), Convert.ToByte('S'), (byte)0 },
-            [UdfMessageType.SecMsg] = new [] { Convert.ToByte('S'), Convert.ToByte('E'), Convert.ToByte('S'), (byte)0 },
+            [UdfMessageType.SecMsg] = new [] { Convert.ToByte('S'), Convert.ToByte('E'), Convert.ToByte('C'), (byte)0 },
         };
 
         protected virtual UdfMessageType GetMessageType(byte[] msg)

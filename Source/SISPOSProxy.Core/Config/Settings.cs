@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Threading.Tasks;
 using SISPOSProxy.Core.Helpers;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 
 namespace SISPOSProxy.Core.Config
 {
-    class Settings
+    public class Settings
     {
         #region udp settings
 
-        public static IList<IPEndPoint> ListenIpEndPoints;
-        public static IList<IPEndPoint> TransmitIpEndPoints;
+        public IList<IPEndPoint> ListenIpEndPoints { get; private set; }
+        public IList<IPEndPoint> TransmitIpEndPoints { get; private set; }
 
         #endregion udp settings
 
         #region db udf namedpipe settings
 
-        public static string Udf2ProxyNamedPipeName;
+        public string Udf2ProxyNamedPipeName { get; private set; }
+        public int Udf2ProxyNamedPipeMaxServerInstances { get; private set; }
 
         #endregion
 
 
-        public static async Task Init()
+        public async Task Init()
         {
             var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
 
@@ -38,7 +35,7 @@ namespace SISPOSProxy.Core.Config
             await InitFromProxySettingsAsync();
         }
 
-        public static async Task<IList<IPEndPoint>> GetListenIpEndPointsAsync(IPAddress ipaddress)
+        private async Task<IList<IPEndPoint>> GetListenIpEndPointsAsync(IPAddress ipaddress)
         {
             var result = new List<IPEndPoint>();
 
@@ -66,7 +63,7 @@ namespace SISPOSProxy.Core.Config
             return result;
         }
 
-        public static async Task<IList<IPEndPoint>> GetTransmitIpEndPointsAsync()
+        private async Task<IList<IPEndPoint>> GetTransmitIpEndPointsAsync()
         {
             var result = new List<IPEndPoint>();
 
@@ -95,7 +92,7 @@ namespace SISPOSProxy.Core.Config
             return result;
         }
 
-        public static async Task InitFromProxySettingsAsync()
+        private async Task InitFromProxySettingsAsync()
         {
             using (var conn = DbConnection.NewInstance())
             {
@@ -113,7 +110,11 @@ namespace SISPOSProxy.Core.Config
 
                         switch (name)
                         {
-                            case "udf2proxy_namedpipe_name": Udf2ProxyNamedPipeName = value;
+                            case "udf2proxy_namedpipe_name":
+                                Udf2ProxyNamedPipeName = value;
+                                break;
+                            case "udf2proxy_namedpipe_maxserverinstances":
+                                Udf2ProxyNamedPipeMaxServerInstances = int.Parse(value);
                                 break;
                         }
                     }

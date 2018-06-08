@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SISPOSProxy.Core.Enums
 {
-    enum UdfMessageType
+    public enum UdfMessageType
     {
         Undefined = -1,
         TagMsg = 1,

@@ -2,7 +2,7 @@
 
 namespace SISPOSProxy.Core.Models
 {
-    class UdfPosMsgModel
+    public class UdfPosMsgModel
     {
         public UdfMessageType MessageType => UdfMessageType.PosMsg;
         public int TagId { get; set; }

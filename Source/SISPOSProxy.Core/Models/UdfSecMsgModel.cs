@@ -2,7 +2,7 @@
 
 namespace SISPOSProxy.Core.Models
 {
-    class UdfSecMsgModel
+    public class UdfSecMsgModel
     {
         public UdfMessageType MessageType => UdfMessageType.SecMsg;
         public int SectorId { get; set; }

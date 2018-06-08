@@ -25,5 +25,7 @@ namespace SISPOSProxy.Core.Caches
 
             return new byte[0];
         }
+
+        public int Count => _queue.Count;
     }
 }

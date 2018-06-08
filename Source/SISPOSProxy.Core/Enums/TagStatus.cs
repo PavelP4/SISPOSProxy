@@ -1,6 +1,6 @@
 ﻿namespace SISPOSProxy.Core.Enums
 {
-    enum TagStatus
+    public enum TagStatus
     {
         Undefined = -1,
         Ok = 0,
