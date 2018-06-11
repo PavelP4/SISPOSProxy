@@ -35,7 +35,6 @@ namespace SISPOSProxy.Core
         public void Start()
         {
             _dbReceiver.Start();
-            
             _sisposReceiver.Start();
             _sisposDataProcessor.Start();
             _sisposTransmitter.Start();
@@ -45,10 +44,10 @@ namespace SISPOSProxy.Core
         {
             _cts.Cancel();
 
+            _sisposTransmitter.Stop();
+            _sisposDataProcessor.Stop();
             _dbReceiver.Stop();
             _sisposReceiver.Stop();
-            _sisposDataProcessor.Stop();
-            _sisposTransmitter.Stop();
         }
 
         public void Dispose()

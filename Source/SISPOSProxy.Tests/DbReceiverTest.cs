@@ -1,14 +1,11 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using SISPOSProxy.Core;
 using SISPOSProxy.Core.Caches;
 using SISPOSProxy.Core.Config;
 using SISPOSProxy.Core.Enums;
 using SISPOSProxy.Core.Models;
-using SISPOSProxy.Core.Receivers;
+using SISPOSProxy.Core.Services;
 using SISPOSProxy.Tests.Senders;
 
 namespace SISPOSProxy.Tests

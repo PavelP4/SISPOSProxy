@@ -33,8 +33,8 @@ namespace SISPOSProxy.Core.Services
 
         public override void Start()
         {
-            Task.Factory.StartNew(ProcessPackets, Token, TaskCreationOptions.LongRunning);
-            Task.Factory.StartNew(PopulateOutputCache, Token, TaskCreationOptions.LongRunning);
+            ServiceTasks.Add(Task.Factory.StartNew(ProcessPackets, Token, TaskCreationOptions.LongRunning));
+            ServiceTasks.Add(Task.Factory.StartNew(PopulateOutputCache, Token, TaskCreationOptions.LongRunning));
         }
 
 
@@ -44,9 +44,13 @@ namespace SISPOSProxy.Core.Services
             {
                 var nextmsg = _inputCache.Pop();
 
-                if (nextmsg.Length == 0 && _processCache.Count == 0)
+                if (nextmsg.Length == 0)
                 {
-                    Thread.Sleep(MessageProcessSleepTimeout);
+                    if (_processCache.Count == 0)
+                    {
+                        Thread.Sleep(MessageProcessSleepTimeout);
+                    }
+                    
                     continue;
                 }
 
@@ -56,14 +60,17 @@ namespace SISPOSProxy.Core.Services
 
         private void PopulateOutputCache(object obj)
         {
-            
             while (!Token.IsCancellationRequested)
             {
                 var nextmsg = _processCache.Pop();
 
-                if (nextmsg.Length == 0 && _processCache.Count == 0)
+                if (nextmsg.Length == 0)
                 {
-                    Thread.Sleep(PopulateProcessSleepTimeout);
+                    if (_processCache.Count == 0)
+                    {
+                        Thread.Sleep(PopulateProcessSleepTimeout);
+                    }
+                    
                     continue;
                 }
 

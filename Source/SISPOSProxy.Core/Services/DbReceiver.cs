@@ -46,7 +46,7 @@ namespace SISPOSProxy.Core.Services
         {
             for (int i = 0; i < count; i++)
             {
-                Task.Factory.StartNew(action, Token, TaskCreationOptions.LongRunning);
+                ServiceTasks.Add(Task.Factory.StartNew(action, Token, TaskCreationOptions.LongRunning));
             }
         }
 

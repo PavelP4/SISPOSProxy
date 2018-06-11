@@ -11,10 +11,13 @@ namespace SISPOSProxy.Core.Services
 {
     public abstract class BaseProcessService : IDisposable
     {
-        private readonly CancellationTokenSource _cts;
-        protected readonly CancellationToken Token;
+        private readonly TimeSpan _tasksFinishingWaitTimeout = TimeSpan.FromSeconds(2);
 
-        protected readonly Settings Settings;        
+        private readonly CancellationTokenSource _cts;
+
+        protected readonly CancellationToken Token;
+        protected readonly Settings Settings;
+        protected readonly List<Task> ServiceTasks;
 
         public BaseProcessService(Settings settings)
         {
@@ -22,6 +25,8 @@ namespace SISPOSProxy.Core.Services
 
             _cts = new CancellationTokenSource();
             Token = _cts.Token;
+
+            ServiceTasks = new List<Task>();
         }
 
         public abstract void Start();
@@ -29,6 +34,8 @@ namespace SISPOSProxy.Core.Services
         public virtual void Stop()
         {
             _cts.Cancel();
+
+            Task.WaitAll(ServiceTasks.ToArray(), _tasksFinishingWaitTimeout); 
         }
 
         public virtual void Dispose()

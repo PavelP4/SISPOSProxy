@@ -16,12 +16,36 @@ namespace SISPOSProxy.Core.Extentions
             return result;
         }
 
-        public static void Populate<T>(this T[] arr, T value)
+        public static void Populate<T>(this T[] source, T value)
         {
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < source.Length; i++)
             {
-                arr[i] = value;
+                source[i] = value;
             }
+        }
+
+        public static bool ContainsSubArray<T>(this T[] source, T[] subarray)
+        {
+            if (source.Length == 0 || subarray.Length == 0) return false;
+
+            for (int i = 0; i < source.Length; i++)
+            {
+                if (source[i].Equals(subarray[i]))
+                {
+                    for (int j = 1; j < subarray.Length; j++)
+                    {
+                        if (!source[i + j].Equals(subarray[j]))
+                        {
+                            i = subarray.Length - 1;
+                            break;
+                        }
+
+                        if (j == subarray.Length) return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

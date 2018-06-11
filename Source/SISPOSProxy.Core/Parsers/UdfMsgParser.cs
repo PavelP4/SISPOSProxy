@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using SISPOSProxy.Core.Enums;
 
 namespace SISPOSProxy.Core.Parsers
@@ -8,9 +9,9 @@ namespace SISPOSProxy.Core.Parsers
     {
         private readonly Dictionary<UdfMessageType, byte[]> _dict = new Dictionary<UdfMessageType, byte[]>()
         {
-            [UdfMessageType.TagMsg] = new [] { Convert.ToByte('T'), Convert.ToByte('A'), Convert.ToByte('G'), (byte)0 },
-            [UdfMessageType.PosMsg] = new [] { Convert.ToByte('P'), Convert.ToByte('O'), Convert.ToByte('S'), (byte)0 },
-            [UdfMessageType.SecMsg] = new [] { Convert.ToByte('S'), Convert.ToByte('E'), Convert.ToByte('C'), (byte)0 },
+            [UdfMessageType.TagMsg] = Encoding.ASCII.GetBytes(new[] { 'T', 'A', 'G', (char)0 }),
+            [UdfMessageType.PosMsg] = Encoding.ASCII.GetBytes(new[] { 'P', 'O', 'S', (char)0 }),
+            [UdfMessageType.SecMsg] = Encoding.ASCII.GetBytes(new[] { 'S', 'E', 'C', (char)0 })
         };
 
         protected virtual UdfMessageType GetMessageType(byte[] msg)

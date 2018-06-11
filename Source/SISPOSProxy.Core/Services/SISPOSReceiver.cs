@@ -20,9 +20,9 @@ namespace SISPOSProxy.Core.Services
 
         public override void Start()
         {
-            if (Settings.ListenIpEndPoint == null) throw new Exception("Listen port is not identified");
+            if (Settings.ListenIpEndPoint == null) throw new Exception("The listen port is not identified");
 
-            Task.Factory.StartNew(ReceivePackets, Token, TaskCreationOptions.LongRunning);
+            ServiceTasks.Add(Task.Factory.StartNew(ReceivePackets, Token, TaskCreationOptions.LongRunning));
         }
         
         private void ReceivePackets(object obj)
