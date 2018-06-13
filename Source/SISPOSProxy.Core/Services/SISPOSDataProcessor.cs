@@ -54,7 +54,7 @@ namespace SISPOSProxy.Core.Services
                     continue;
                 }
 
-                _processCache.Push(Task.Run(() => _repairService.FixMessage(nextmsg), Token));
+                _processCache.Push(Task.Run(() => _repairService.FixPayload(nextmsg), Token));
             }
         }
 
@@ -62,9 +62,9 @@ namespace SISPOSProxy.Core.Services
         {
             while (!Token.IsCancellationRequested)
             {
-                var nextmsg = _processCache.Pop();
+                var nextmsgs = _processCache.Pop();
 
-                if (nextmsg.Length == 0)
+                if (nextmsgs.Length == 0)
                 {
                     if (_processCache.Count == 0)
                     {
@@ -74,7 +74,10 @@ namespace SISPOSProxy.Core.Services
                     continue;
                 }
 
-                _outputCache.Push(nextmsg);
+                foreach (var msg in nextmsgs)
+                {
+                    _outputCache.Push(msg);
+                }
             }
         }
     }

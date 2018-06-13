@@ -7,7 +7,7 @@ namespace SISPOSProxy.Core.Parsers
 {
     abstract class UdfMsgParser
     {
-        private readonly Dictionary<UdfMessageType, byte[]> _dict = new Dictionary<UdfMessageType, byte[]>()
+        private static readonly Dictionary<UdfMessageType, byte[]> _dict = new Dictionary<UdfMessageType, byte[]>()
         {
             [UdfMessageType.TagMsg] = Encoding.ASCII.GetBytes(new[] { 'T', 'A', 'G', (char)0 }),
             [UdfMessageType.PosMsg] = Encoding.ASCII.GetBytes(new[] { 'P', 'O', 'S', (char)0 }),

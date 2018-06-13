@@ -49,5 +49,10 @@ namespace SISPOSProxy.Core.Extentions
 
             return result;
         }
+
+        public static int ConvertToIntAsString(this byte[] source, int from, int count)
+        {
+            return int.Parse(Encoding.ASCII.GetString(source, from, count));
+        }
     }
 }

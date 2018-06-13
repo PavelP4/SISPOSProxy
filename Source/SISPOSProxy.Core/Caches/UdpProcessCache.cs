@@ -9,20 +9,20 @@ namespace SISPOSProxy.Core.Caches
 {
     public class UdpProcessCache
     {
-        private readonly ConcurrentQueue<Task<byte[]>> _queue;
+        private readonly ConcurrentQueue<Task<byte[][]>> _queue;
         private readonly object _lock = new object();
 
         public UdpProcessCache()
         {
-            _queue = new ConcurrentQueue<Task<byte[]>>();
+            _queue = new ConcurrentQueue<Task<byte[][]>>();
         }
 
-        public void Push(Task<byte[]> task)
+        public void Push(Task<byte[][]> task)
         {
             _queue.Enqueue(task);
         }
 
-        public byte[] Pop()
+        public byte[][] Pop()
         {
             lock (_lock)
             {
@@ -35,7 +35,7 @@ namespace SISPOSProxy.Core.Caches
                 }
             }
 
-            return new byte[0];
+            return new byte[0][];
         }
 
         public int Count => _queue.Count;
