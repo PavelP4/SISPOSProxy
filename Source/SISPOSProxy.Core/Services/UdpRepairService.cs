@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SISPOSProxy.Core.Caches;
 using SISPOSProxy.Core.Enums;
 using SISPOSProxy.Core.Extentions;
+using SISPOSProxy.Core.Parsers;
 
 namespace SISPOSProxy.Core.Services
 {
@@ -13,77 +15,113 @@ namespace SISPOSProxy.Core.Services
     {
         private static readonly byte SentenceBegin = Encoding.ASCII.GetBytes("$")[0];
         private static readonly byte[] SentenceEnd = Encoding.ASCII.GetBytes("\r\n");
+        private static readonly byte SentenceSeparator = Encoding.ASCII.GetBytes(",")[0];
+        private static readonly byte SentenceChecksumSeparator = Encoding.ASCII.GetBytes("*")[0];
 
-        private static readonly byte[][] FixingSentenceTypeBytes =
+        private static readonly int UdpPayloadLength = 1304;
+
+        private static readonly IDictionary<UdpSentenceType, byte[]>  SentenceTypeBytes = new Dictionary<UdpSentenceType, byte[]>()
         {
-            Encoding.ASCII.GetBytes("$PANSPT")
+            [UdpSentenceType.PANSPT] = Encoding.ASCII.GetBytes("$PANSPT,")
         };
 
         private readonly DbCache _dbCache;
 
+        private readonly UdpPanSptParser _udpPanSptParser;
+
         public UdpRepairService(DbCache dbCache)
         {
             _dbCache = dbCache;
+
+            _udpPanSptParser = new UdpPanSptParser();
         }
 
-        public byte[] FixMessage(byte[] input)
+        public byte[][] FixMessage(byte[] input)
         {
-            if (!IsNeededToBeFixed(input)) return input;
-
-            byte[] result;
+            if (!IsNeededToBeFixed(input)) return new [] { input };
 
             try
             {
-                result = FixSentences(input);
+                return FixSentences(input);
             }
             catch 
             {
-                result = new byte[0];
+                return new byte[0][];
             }
-
-            return result;
         }
 
         public bool IsNeededToBeFixed(byte[] input)
         {
             if (input.Length == 0) return false;
 
-            return FixingSentenceTypeBytes.Any(input.ContainsSubArray);
+            return SentenceTypeBytes.Any(x => input.ContainsSubArray(x.Value));
         }
 
-        private byte[] FixSentences(byte[] input)
+        private byte[][] FixSentences(byte[] input)
         {
-            var result = new byte[input.Length];
-
-            for (int i = 0; i < input.Length; i++)
+            using (var outStream = new MemoryStream())
             {
-                result[i] = input[i];
-
-                if (input[i] == SentenceBegin)
+                for (int i = 0; i < input.Length; i++)
                 {
-                    var sntSgmt = GetSentenceFrom(input, i);
-
-                    if (TryFixSentence(sntSgmt))
+                    if (input[i] == SentenceBegin)
                     {
-                        i = sntSgmt.Count;
+                        var sntSgmt = GetSentenceFrom(input, i);
+                        var sntType = GetSentenceType(sntSgmt);
+
+                        if (sntType != UdpSentenceType.Undefined)
+                        {
+                            FixAndSaveResult(sntSgmt, sntType, outStream);
+                        }
+                        else
+                        {
+                            OnlySaveResult(sntSgmt, outStream);
+                        }
+
+                        i += sntSgmt.Count - 1;
+                    }
+                    else
+                    {
+                        outStream.WriteByte(input[i]);
                     }
                 }
-            }
 
-            return result;
+                return SplitUdpPayload(outStream);
+            }
         }
 
-        private bool TryFixSentence(ArraySegment<byte> smgt)
+        private byte[][] SplitUdpPayload(MemoryStream outStream)
         {
-            var sntType = GetSentenceType(smgt);
+            throw new NotImplementedException();
+        }
 
-            switch (sntType)
+        private void FixAndSaveResult(ArraySegment<byte> smgt, UdpSentenceType type, MemoryStream outStream)
+        {
+            switch (type)
             {
                 case UdpSentenceType.PANSPT:
+                    FixPANSPT(smgt, outStream);
+                    break;
+                default:
+                    OnlySaveResult(smgt, outStream);
                     break;
             }
+        }
 
-            return false;
+        private void OnlySaveResult(ArraySegment<byte> smgt, MemoryStream outStream)
+        {
+            if (smgt.Array == null) return;
+
+            outStream.Write(smgt.Array, smgt.Offset, smgt.Count);
+        }
+
+        private void FixPANSPT(ArraySegment<byte> smgt, MemoryStream outStream)
+        {
+            if (smgt.Array == null) return;
+
+            if (_udpPanSptParser.TryParse(smgt, out var model))
+            {
+
+            }
         }
 
         private ArraySegment<byte> GetSentenceFrom(byte[] input, int fromIndex)
@@ -122,7 +160,25 @@ namespace SISPOSProxy.Core.Services
 
         private UdpSentenceType GetSentenceType(ArraySegment<byte> sgmt)
         {
-            return UdpSentenceType.Undefined;
+            var result = UdpSentenceType.Undefined;
+
+            foreach (var typeBytes in SentenceTypeBytes)
+            {
+                if (sgmt.Count < typeBytes.Value.Length) continue;
+
+                result = typeBytes.Key;
+
+                for (int i = 0, j = sgmt.Offset + i; i < typeBytes.Value.Length; i++)
+                {
+                    if (typeBytes.Value[i] != sgmt.Array?[j])
+                    {
+                        result = UdpSentenceType.Undefined;
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

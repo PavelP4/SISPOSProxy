@@ -28,24 +28,26 @@ namespace SISPOSProxy.Core.Extentions
         {
             if (source.Length == 0 || subarray.Length == 0) return false;
 
+            var result = true;
+
             for (int i = 0; i < source.Length; i++)
             {
-                if (source[i].Equals(subarray[i]))
+                if (source[i].Equals(subarray[0]))
                 {
+                    result = true;
+
                     for (int j = 1; j < subarray.Length; j++)
                     {
                         if (!source[i + j].Equals(subarray[j]))
                         {
-                            i = subarray.Length - 1;
+                            result = false;
                             break;
                         }
-
-                        if (j == subarray.Length) return true;
                     }
                 }
             }
 
-            return false;
+            return result;
         }
     }
 }
