@@ -51,9 +51,17 @@ namespace SISPOSProxy.Core.Models
             return true;
         }
 
-        public override byte[] ToBytes()
+        public override byte[] GetSentenceData()
         {
-            return base.ToBytes();
+            var sb = new StringBuilder(12);
+
+            sb.Append(SectorId);
+            sb.Append(SentenceSeparatorStr);
+            sb.Append(TagsCount);
+            sb.Append(SentenceSeparatorStr);
+            sb.Append((int)SectorStatus);
+          
+            return Encoding.ASCII.GetBytes(sb.ToString());
         }
     }
 }

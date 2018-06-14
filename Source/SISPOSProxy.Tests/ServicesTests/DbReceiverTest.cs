@@ -8,7 +8,7 @@ using SISPOSProxy.Core.Models;
 using SISPOSProxy.Core.Services;
 using SISPOSProxy.Tests.Senders;
 
-namespace SISPOSProxy.Tests
+namespace SISPOSProxy.Tests.ServicesTests
 {
     [TestFixture]
     public class DbReceiverTest

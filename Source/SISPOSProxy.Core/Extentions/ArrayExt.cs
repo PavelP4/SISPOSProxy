@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SISPOSProxy.Core.Extentions
 {
-    static class ArrayExt
+    public static class ArrayExt
     {
         public static T[] Slice<T>(this T[] source, int from, int count)
         {
@@ -28,9 +28,9 @@ namespace SISPOSProxy.Core.Extentions
         {
             if (source.Length == 0 || subarray.Length == 0) return false;
 
-            var result = true;
+            var result = false;
 
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length && !result; i++)
             {
                 if (source[i].Equals(subarray[0]))
                 {

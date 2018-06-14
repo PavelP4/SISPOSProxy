@@ -30,12 +30,12 @@ namespace SISPOSProxy.Service
             EventLog.Source = ServiceName;
             EventLog.Log = "Application";
 
-            ((ISupportInitialize)(EventLog)).BeginInit();
+            ((ISupportInitialize)EventLog).BeginInit();
             if (!EventLog.SourceExists(EventLog.Source))
             {
                 EventLog.CreateEventSource(EventLog.Source, EventLog.Log);
             }
-            ((ISupportInitialize)(EventLog)).EndInit();
+            ((ISupportInitialize)EventLog).EndInit();
         }
 
         public void Start()
