@@ -40,7 +40,7 @@ namespace SISPOSProxy.Core.Services
 
         private byte[][] FixSentences(byte[] input)
         {
-            using (var outStream = new UdpPayloadStream())
+            using (var outStream = new UdpPayloadCache())
             {
                 for (int i = 0; i < input.Length; i++)
                 {
@@ -58,7 +58,7 @@ namespace SISPOSProxy.Core.Services
                     }
                 }
 
-                return UdpPayloadStream.GetPayloads();
+                return outStream.GetPayloads();
             }
         }
 
@@ -96,7 +96,7 @@ namespace SISPOSProxy.Core.Services
             return new ArraySegment<byte>(input, fromIndex, toIndex);
         }
 
-        private void FixAndSaveResult(ArraySegment<byte> smgt, UdpPayloadStream outStream)
+        private void FixAndSaveResult(ArraySegment<byte> smgt, UdpPayloadCache outStream)
         {
             UdpSentence baseModel = null;
 
@@ -123,14 +123,14 @@ namespace SISPOSProxy.Core.Services
             }
         }
 
-        private void OnlySaveResult(ArraySegment<byte> smgt, UdpPayloadStream outStream)
+        private void OnlySaveResult(ArraySegment<byte> smgt, UdpPayloadCache outStream)
         {
             if (smgt.Array == null) return;
 
             outStream.Write(smgt.Array, smgt.Offset, smgt.Count);
         }
 
-        private void SaveResult(byte[] input, UdpPayloadStream outStream)
+        private void SaveResult(byte[] input, UdpPayloadCache outStream)
         {
             outStream.Write(input, 0, input.Length);
         }

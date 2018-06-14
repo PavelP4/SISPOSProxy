@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Caches\DbCache.cs" />
     <Compile Include="Caches\MessageCache.cs" />
-    <Compile Include="Caches\UdpPayloadStream.cs" />
+    <Compile Include="Caches\UdpPayloadCache.cs" />
     <Compile Include="Caches\UdpProcessCache.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Enums\SectorStatus.cs" />
@@ -56,16 +56,12 @@
     <Compile Include="Extentions\ArrayExt.cs" />
     <Compile Include="Helpers\DbConnection.cs" />
     <Compile Include="Helpers\NetHelper.cs" />
-    <Compile Include="Models\UdfPosMsgModel.cs" />
-    <Compile Include="Models\UdfSecMsgModel.cs" />
-    <Compile Include="Models\UdfTagMsgModel.cs" />
+    <Compile Include="Models\UdfMessage.cs" />
+    <Compile Include="Models\UdfPosMsg.cs" />
+    <Compile Include="Models\UdfSecMsg.cs" />
+    <Compile Include="Models\UdfTagMsg.cs" />
     <Compile Include="Models\UdpSentence.cs" />
     <Compile Include="Models\UdpPanSpt.cs" />
-    <Compile Include="Parsers\IParser.cs" />
-    <Compile Include="Parsers\UdfMsgParser.cs" />
-    <Compile Include="Parsers\UdfSecMsgParser.cs" />
-    <Compile Include="Parsers\UdfPosMsgParser.cs" />
-    <Compile Include="Parsers\UdfTagMsgParser.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BaseProcessService.cs" />

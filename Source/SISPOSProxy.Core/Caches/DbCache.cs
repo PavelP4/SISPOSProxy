@@ -61,7 +61,7 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
-        public void Save(UdfTagMsgModel model)
+        public void Save(UdfTagMsg model)
         {
             if (model.TagId > MaxTagAmount) return;
 
@@ -71,7 +71,7 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
-        public void Save(UdfPosMsgModel model)
+        public void Save(UdfPosMsg model)
         {
             if (model.TagId > MaxTagAmount) return;
 
@@ -81,7 +81,7 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
-        public void Save(UdfSecMsgModel model)
+        public void Save(UdfSecMsg model)
         {
             if (model.SectorId > MaxSecAmount) return;
 

@@ -37,7 +37,7 @@ namespace SISPOSProxy.Tests.Senders
             }
         }
 
-        public void Send(UdfTagMsgModel model)
+        public void Send(UdfTagMsg model)
         {
             var msg = new byte[12];
 
@@ -52,7 +52,7 @@ namespace SISPOSProxy.Tests.Senders
             Send(msg);
         }
 
-        public void Send(UdfPosMsgModel model)
+        public void Send(UdfPosMsg model)
         {
             var msg = new byte[12];
 
@@ -67,7 +67,7 @@ namespace SISPOSProxy.Tests.Senders
             Send(msg);
         }
 
-        public void Send(UdfSecMsgModel model)
+        public void Send(UdfSecMsg model)
         {
             var msg = new byte[12];
 

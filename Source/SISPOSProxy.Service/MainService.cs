@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using SISPOSProxy.Core;
 
 namespace SISPOSProxy.Service
@@ -26,7 +20,22 @@ namespace SISPOSProxy.Service
             CanPauseAndContinue = false;
             AutoLog = true;
 
+            InitEventLog();
+
             _proxy = new Proxy();
+        }
+
+        private void InitEventLog()
+        {
+            EventLog.Source = ServiceName;
+            EventLog.Log = "Application";
+
+            ((ISupportInitialize)(EventLog)).BeginInit();
+            if (!EventLog.SourceExists(EventLog.Source))
+            {
+                EventLog.CreateEventSource(EventLog.Source, EventLog.Log);
+            }
+            ((ISupportInitialize)(EventLog)).EndInit();
         }
 
         public void Start()
@@ -37,26 +46,26 @@ namespace SISPOSProxy.Service
         protected override void OnStart(string[] args)
         {
             _proxy.Start();
+
+            AddLogInfo("Service was started succesfully");
         }
 
         protected override void OnStop()
         {
             _proxy.Stop();
             _proxy.Dispose();
+
+            AddLogInfo("Service was stopped");
         }
 
-        //protected void AddLog(string log)
-        //{
-        //    try
-        //    {
-        //        if (!EventLog.SourceExists("SISPOSProxyService"))
-        //        {
-        //            EventLog.CreateEventSource("SISPOSProxyService", "SISPOSProxyService");
-        //        }
-        //        EventLog.Source = "SISPOSProxyService";
-        //        EventLog.WriteEntry(log);
-        //    }
-        //    catch { }
-        //}
+        protected void AddLogInfo(string msg)
+        {
+            EventLog.WriteEntry(msg, EventLogEntryType.Information);
+        }
+
+        protected void AddLogError(string msg)
+        {
+            EventLog.WriteEntry(msg, EventLogEntryType.Error);
+        }
     }
 }

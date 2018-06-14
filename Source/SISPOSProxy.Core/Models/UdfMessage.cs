@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using SISPOSProxy.Core.Enums;
 
-namespace SISPOSProxy.Core.Parsers
+namespace SISPOSProxy.Core.Models
 {
-    abstract class UdfMsgParser
+    public abstract class UdfMessage
     {
-        private static readonly Dictionary<UdfMessageType, byte[]> _dict = new Dictionary<UdfMessageType, byte[]>()
+        public static readonly IDictionary<UdfMessageType, byte[]> MessageTypeBytes = new Dictionary<UdfMessageType, byte[]>()
         {
             [UdfMessageType.TagMsg] = Encoding.ASCII.GetBytes(new[] { 'T', 'A', 'G', (char)0 }),
             [UdfMessageType.PosMsg] = Encoding.ASCII.GetBytes(new[] { 'P', 'O', 'S', (char)0 }),
             [UdfMessageType.SecMsg] = Encoding.ASCII.GetBytes(new[] { 'S', 'E', 'C', (char)0 })
         };
 
-        protected virtual UdfMessageType GetMessageType(byte[] msg)
+        public UdfMessageType Type { get; }
+
+        public UdfMessage(UdfMessageType type)
         {
-            foreach (var item in _dict)
+            Type = type;
+        }
+
+        protected static UdfMessageType GetMessageType(byte[] msg)
+        {
+            foreach (var item in MessageTypeBytes)
             {
                 for (int i = 0; i < 4; i++)
                 {

@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SISPOSProxy.Core.Caches;
 using SISPOSProxy.Core.Config;
-using SISPOSProxy.Core.Parsers;
+using SISPOSProxy.Core.Models;
 
 namespace SISPOSProxy.Core.Services
 {
@@ -17,10 +17,6 @@ namespace SISPOSProxy.Core.Services
         private const int ProcessMessagesSleepTimeout = 1;
         private const int ProcessMessagesUnhandledPercent = 25;
 
-        private readonly UdfTagMsgParser _udfTagMsgParser;
-        private readonly UdfPosMsgParser _udfPosMsgParser;
-        private readonly UdfSecMsgParser _udfSecMsgParser;
-
         private readonly DbCache _dbCache;
         private readonly MessageCache _inputCache;
 
@@ -28,10 +24,6 @@ namespace SISPOSProxy.Core.Services
             :base(settings)
         {
             _dbCache = dbCache;
-
-            _udfTagMsgParser = new UdfTagMsgParser();
-            _udfPosMsgParser = new UdfPosMsgParser();
-            _udfSecMsgParser = new UdfSecMsgParser();
 
             _inputCache = new MessageCache();
         }
@@ -86,15 +78,15 @@ namespace SISPOSProxy.Core.Services
                     continue;
                 }
                 
-                if (_udfTagMsgParser.TryParse(nextmsg, out var tagResult))
+                if (UdfTagMsg.TryParse(nextmsg, out var tagResult))
                 {
                     _dbCache.Save(tagResult);
                 }
-                else if (_udfPosMsgParser.TryParse(nextmsg, out var posResult))
+                else if (UdfPosMsg.TryParse(nextmsg, out var posResult))
                 {
                     _dbCache.Save(posResult);
                 }
-                else if (_udfSecMsgParser.TryParse(nextmsg, out var secResult))
+                else if (UdfSecMsg.TryParse(nextmsg, out var secResult))
                 {
                     _dbCache.Save(secResult);
                 }

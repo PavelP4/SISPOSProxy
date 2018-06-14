@@ -24,17 +24,17 @@ namespace SISPOSProxy.Tests
         public void CanReceiveAllMessageTypes()
         {
             var dbcache = new DbCache();
-            var tagMsg = new UdfTagMsgModel
+            var tagMsg = new UdfTagMsg
             {
                 TagId = 15,
                 TagStatus = TagStatus.Inactive
             };
-            var posMsg = new UdfPosMsgModel
+            var posMsg = new UdfPosMsg
             {
                 TagId = 15,
                 SectorId = 44
             };
-            var secMsg = new UdfSecMsgModel
+            var secMsg = new UdfSecMsg
             {
                 SectorId = 44,
                 SectorStatus = SectorStatus.Ok
@@ -62,21 +62,21 @@ namespace SISPOSProxy.Tests
         {
             var dbcache = new DbCache();
             var tagMsgs = Enumerable.Range(1, 450)
-                .Select(x => new UdfTagMsgModel
+                .Select(x => new UdfTagMsg
                 {
                     TagId = x,
                     TagStatus = TagStatus.Ok
                 });
 
             var posMsgs = Enumerable.Range(1, 450)
-                .Select(x => new UdfPosMsgModel
+                .Select(x => new UdfPosMsg
                 {
                     TagId = x,
                     SectorId = 44
                 });
 
             var secMsgs = Enumerable.Range(0, 83)
-                .Select(x => new UdfSecMsgModel
+                .Select(x => new UdfSecMsg
                 {
                     SectorId = x,
                     SectorStatus = SectorStatus.Ok
