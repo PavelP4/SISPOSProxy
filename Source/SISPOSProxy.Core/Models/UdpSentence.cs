@@ -91,7 +91,7 @@ namespace SISPOSProxy.Core.Models
 
                 result = typeBytes.Key;
 
-                for (int i = 0, j = sgmt.Offset + i; i < typeBytes.Value.Length; i++)
+                for (int i = 0, j = sgmt.Offset + i; i < typeBytes.Value.Length; i++, j++)
                 {
                     if (typeBytes.Value[i] != sgmt.Array?[j])
                     {

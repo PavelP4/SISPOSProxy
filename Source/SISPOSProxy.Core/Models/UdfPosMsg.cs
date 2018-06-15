@@ -24,5 +24,15 @@ namespace SISPOSProxy.Core.Models
 
             return true;
         }
+
+        public override byte[] GetPayload()
+        {
+            var result = new byte[8]; // int + int = 8
+
+            BitConverter.GetBytes(TagId).CopyTo(result, 0);
+            BitConverter.GetBytes(SectorId).CopyTo(result, 4);
+
+            return result;
+        }
     }
 }

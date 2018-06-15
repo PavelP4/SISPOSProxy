@@ -26,7 +26,7 @@ namespace SISPOSProxy.Core.Models
             var sepCount = 0;
             var seps = new int[4];
 
-            for (int i = 0, j = input.Offset + i; i < input.Count; i++)
+            for (int i = 0, j = input.Offset + i; i < input.Count; i++, j++)
             {
                 if (input.Array[j] == SentenceSeparator || input.Array[j] == SentenceChecksumSeparator)
                 {

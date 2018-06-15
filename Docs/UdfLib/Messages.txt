@@ -1,0 +1,3 @@
+Имя для named pipe = “\\.\pipe\SIS_POS_UDF_Messenger”.
+Я – клиент, ты – сервер.
+Named pipe должен иметь права доступа для “Network Service”, т.к. “MySQL57” сервис запускается от его имени.

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using SISPOSProxy.Core.Enums;
 
@@ -33,6 +34,28 @@ namespace SISPOSProxy.Core.Models
             }
 
             return UdfMessageType.Undefined;
+        }
+
+        public byte[] GetTypeBytes()
+        {
+            return MessageTypeBytes[Type];
+        }
+
+        public virtual byte[] GetPayload()
+        {
+            return new byte[0];
+        }
+
+        public byte[] ToBytes()
+        {
+            var type = GetTypeBytes();
+            var payload = GetPayload();
+            var result = new byte[type.Length + payload.Length];
+
+            type.CopyTo(result, 0);
+            payload.CopyTo(result, type.Length);
+
+            return result;
         }
     }
 }
