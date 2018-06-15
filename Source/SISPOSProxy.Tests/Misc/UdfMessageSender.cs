@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SISPOSProxy.Core.Config;
 using SISPOSProxy.Core.Models;
 
-namespace SISPOSProxy.Tests.Senders
+namespace SISPOSProxy.Tests.Misc
 {
     class UdfMessageSender : IDisposable
     {

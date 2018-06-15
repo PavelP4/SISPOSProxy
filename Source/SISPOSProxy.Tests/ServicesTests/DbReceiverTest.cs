@@ -6,7 +6,7 @@ using SISPOSProxy.Core.Config;
 using SISPOSProxy.Core.Enums;
 using SISPOSProxy.Core.Models;
 using SISPOSProxy.Core.Services;
-using SISPOSProxy.Tests.Senders;
+using SISPOSProxy.Tests.Misc;
 
 namespace SISPOSProxy.Tests.ServicesTests
 {
