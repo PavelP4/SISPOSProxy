@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SISPOSProxy.Core.Helpers
 {
-    class NetHelper
+    public class NetHelper
     {
         public static IPAddress GetLocalIPv4(NetworkInterfaceType ntype)
         {

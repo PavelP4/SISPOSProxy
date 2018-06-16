@@ -93,7 +93,7 @@ namespace SISPOSProxy.Core.Services
                 toIndex = i - 1;
             }
 
-            return new ArraySegment<byte>(input, fromIndex, toIndex);
+            return new ArraySegment<byte>(input, fromIndex, toIndex - fromIndex);
         }
 
         private void FixAndSaveResult(ArraySegment<byte> smgt, UdpPayloadCache outStream)
@@ -137,7 +137,7 @@ namespace SISPOSProxy.Core.Services
 
         #region Fixing logic
 
-        private void FixPANSPT(UdpPanSpt model)
+        public void FixPANSPT(UdpPanSpt model)
         {
             model.TagsCount = _dbCache.GetSectorTagsAmount(model.SectorId);
         }

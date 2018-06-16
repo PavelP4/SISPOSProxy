@@ -10,7 +10,7 @@ namespace SISPOSProxy.Service
     /// </summary>
     public partial class MainService : ServiceBase
     {
-        private readonly Proxy _proxy;
+        private Proxy _proxy;
 
         public MainService()
         {
@@ -21,8 +21,6 @@ namespace SISPOSProxy.Service
             AutoLog = true;
 
             InitEventLog();
-
-            _proxy = new Proxy();
         }
 
         private void InitEventLog()
@@ -45,6 +43,7 @@ namespace SISPOSProxy.Service
 
         protected override void OnStart(string[] args)
         {
+            _proxy = new Proxy();
             _proxy.Start();
 
             AddLogInfo("Service was started succesfully");

@@ -9,15 +9,17 @@ namespace SISPOSProxy.Core
     public class Proxy : IDisposable
     {
         private readonly CancellationTokenSource _cts;
+        private readonly CancellationToken _token;
 
-        private readonly DbReceiver _dbReceiver;
-        private readonly SISPOSReceiver _sisposReceiver;
-        private readonly SISPOSDataProcessor _sisposDataProcessor;
-        private readonly SISPOSTransmitter _sisposTransmitter;
+        private DbReceiver _dbReceiver;
+        private SISPOSReceiver _sisposReceiver;
+        private SISPOSDataProcessor _sisposDataProcessor;
+        private SISPOSTransmitter _sisposTransmitter;
 
         public Proxy()
         {
             _cts = new CancellationTokenSource();
+            _token = _cts.Token;
 
             var settings = new Settings();
             settings.Init().Wait(_cts.Token);
@@ -42,7 +44,7 @@ namespace SISPOSProxy.Core
 
         public void Stop()
         {
-            _cts.Cancel();
+            _cts.Cancel(); 
 
             _sisposTransmitter.Stop();
             _sisposDataProcessor.Stop();
@@ -52,7 +54,10 @@ namespace SISPOSProxy.Core
 
         public void Dispose()
         {
-            Stop();
+            if (!_token.IsCancellationRequested)
+            {
+                Stop();
+            }
 
             _cts.Dispose();
             _dbReceiver.Dispose();

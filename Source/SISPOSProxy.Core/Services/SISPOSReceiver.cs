@@ -20,14 +20,14 @@ namespace SISPOSProxy.Core.Services
 
         public override void Start()
         {
-            if (Settings.ListenIpEndPoint == null) throw new Exception("The listen port is not identified");
-
             ServiceTasks.Add(Task.Factory.StartNew(ReceivePackets, Token, TaskCreationOptions.LongRunning));
         }
         
         private void ReceivePackets(object obj)
         {
-            using (var client = new UdpClient(Settings.ListenIpEndPoint))
+            if (!Settings.ListenPort.HasValue) throw new Exception("The listen port is not identified");
+
+            using (var client = new UdpClient(Settings.ListenPort.Value))
             {
                 IPEndPoint remote = null;
 

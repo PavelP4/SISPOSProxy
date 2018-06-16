@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SISPOSProxy.Core.Caches;
 using SISPOSProxy.Core.Config;
+using SISPOSProxy.Core.Extentions;
+using SISPOSProxy.Core.Helpers;
 using SISPOSProxy.Core.Services;
 using SISPOSProxy.Tests.Misc;
 
@@ -19,25 +19,32 @@ namespace SISPOSProxy.Tests.ServicesTests
 
         public SISPOSReceiverTests()
         {
-            _settings.Init().Wait();
+            _settings.ListenPort = 55554;
         }
 
         [Test]
         public void ReceivePackets()
         {
+            if (!_settings.ListenPort.HasValue) throw new ArgumentException("Listen port is not initialized");
+
             var msgCache = new MessageCache();
             var sender = new UdpPacketSender();
-
+            var packetsCount = 10;
+          
             var msg = Encoding.ASCII.GetBytes("$PANSPT,33,22,1*88\r\n$PANSPT,44,55,1*99\r\n");
 
             using (var receiver = new SISPOSReceiver(_settings, msgCache))
             {
                 receiver.Start();
-               
-                sender.Send(_settings.ListenIpEndPoint, msg);
+
+                for (int i = 0; i < packetsCount; i++)
+                {
+                   sender.SendToLocalhost(_settings.ListenPort.Value, msg); 
+                }
             }
 
-            Assert.AreEqual(1, msgCache.Count, "The message was not received");
+            Assert.AreEqual(packetsCount, msgCache.Count, "The message was not received");
+            Assert.IsTrue(msgCache.Pop().ContainsSubArray(msg));
         }
     }
 }

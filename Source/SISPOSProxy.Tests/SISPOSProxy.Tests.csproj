@@ -47,13 +47,17 @@
   <ItemGroup>
     <Compile Include="CachesTests\UdpPayloadCacheTests.cs" />
     <Compile Include="ExtentionsTests\ArrayExtTests.cs" />
+    <Compile Include="Misc\UdpPacketReceiver.cs" />
     <Compile Include="Misc\UdpPacketSender.cs" />
     <Compile Include="ModelsTests\UdfMessagesTests.cs" />
     <Compile Include="ModelsTests\UdpSentencesTests.cs" />
     <Compile Include="ServicesTests\DbReceiverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Misc\UdfMessageSender.cs" />
+    <Compile Include="ServicesTests\SISPOSDataProcessorTests.cs" />
     <Compile Include="ServicesTests\SISPOSReceiverTests.cs" />
+    <Compile Include="ServicesTests\SISPOSTransmitterTests.cs" />
+    <Compile Include="ServicesTests\UdpRepairServiceTests.cs" />
     <Compile Include="SettingsTests\SettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>

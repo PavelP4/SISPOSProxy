@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace SISPOSProxy.Core.Helpers
 {
-    class DbConnection
+    public class DbConnection
     {
         public static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["posdb"].ConnectionString;
 

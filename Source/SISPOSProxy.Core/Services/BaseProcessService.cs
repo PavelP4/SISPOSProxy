@@ -40,6 +40,11 @@ namespace SISPOSProxy.Core.Services
 
         public virtual void Dispose()
         {
+            if (!Token.IsCancellationRequested)
+            {
+                Stop();
+            }
+
             _cts?.Dispose();
         }
     }

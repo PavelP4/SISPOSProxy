@@ -34,7 +34,7 @@ namespace SISPOSProxy.Core.Services
 
         private void RunSender(IPEndPoint iepoint)
         {
-            using (var client = new UdpClient(iepoint))
+            using (var client = new UdpClient())
             {
                 while (!Token.IsCancellationRequested)
                 {
@@ -50,7 +50,7 @@ namespace SISPOSProxy.Core.Services
                         continue;
                     }
 
-                    client.Send(nextmsg, nextmsg.Length);
+                    client.Send(nextmsg, nextmsg.Length, iepoint);
                 }
             }
         }

@@ -12,15 +12,15 @@ namespace SISPOSProxy.Core.Config
     {
         #region udp settings
 
-        public IPEndPoint ListenIpEndPoint { get; private set; }
-        public IList<IPEndPoint> TransmitIpEndPoints { get; private set; }
+        public int? ListenPort { get; set; }
+        public IList<IPEndPoint> TransmitIpEndPoints { get; set; }
 
         #endregion udp settings
 
         #region db udf namedpipe settings
 
-        public string Udf2ProxyNamedPipeName { get; private set; }
-        public int Udf2ProxyNamedPipeMaxServerInstances { get; private set; }
+        public string Udf2ProxyNamedPipeName { get; set; }
+        public int Udf2ProxyNamedPipeMaxServerInstances { get; set; }
 
         #endregion
 
@@ -29,13 +29,13 @@ namespace SISPOSProxy.Core.Config
         {
             var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
 
-            ListenIpEndPoint = await GetListenIpEndPointAsync(localIpAddress);
+            ListenPort = await GetListenPortAsync(localIpAddress);
             TransmitIpEndPoints = await GetTransmitIpEndPointsAsync();
 
             await InitFromProxySettingsAsync();
         }
 
-        private async Task<IPEndPoint> GetListenIpEndPointAsync(IPAddress ipaddress)
+        private async Task<int?> GetListenPortAsync(IPAddress ipaddress)
         {
             using (var conn = DbConnection.NewInstance())
             {
@@ -52,7 +52,7 @@ namespace SISPOSProxy.Core.Config
                     {
                         if (int.TryParse(reader.GetString(0), out int port))
                         {
-                            return new IPEndPoint(ipaddress, port);
+                            return port;
                         }
                     }
                 }
