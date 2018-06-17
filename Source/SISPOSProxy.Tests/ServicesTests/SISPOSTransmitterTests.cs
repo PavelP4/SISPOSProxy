@@ -24,7 +24,7 @@ namespace SISPOSProxy.Tests.ServicesTests
 
         public SISPOSTransmitterTests()
         {
-            var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
+            var localIpAddress = NetHelper.GetLocalIPv4();
 
             _settings.TransmitIpEndPoints = new List<IPEndPoint>();
 

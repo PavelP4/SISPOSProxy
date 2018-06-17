@@ -20,14 +20,14 @@ namespace SISPOSProxy.Core.Config
         #region db udf namedpipe settings
 
         public string Udf2ProxyNamedPipeName { get; set; }
-        public int Udf2ProxyNamedPipeMaxServerInstances { get; set; }
+        public int Udf2ProxyNamedPipeMaxServerInstances { get; set; } = 4;
 
         #endregion
 
 
         public async Task InitAsync()
         {
-            var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
+            var localIpAddress = NetHelper.GetLocalIPv4();
 
             ListenPort = await GetListenPortAsync(localIpAddress);
             TransmitIpEndPoints = await GetTransmitIpEndPointsAsync();

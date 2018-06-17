@@ -17,7 +17,7 @@ namespace SISPOSProxy.Tests.Misc
 
         public void SendToLocalhost(int port, byte[] payload)
         {
-            var localIpEndPoint = new IPEndPoint(NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet), port);
+            var localIpEndPoint = new IPEndPoint(NetHelper.GetLocalIPv4(), port);
 
             Send(localIpEndPoint, payload);
         }

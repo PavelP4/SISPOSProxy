@@ -11,11 +11,11 @@ namespace SISPOSProxy.Core.Helpers
 {
     public class NetHelper
     {
-        public static IPAddress GetLocalIPv4(NetworkInterfaceType ntype)
+        public static IPAddress GetLocalIPv4()
         {
             foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (item.NetworkInterfaceType == ntype && item.OperationalStatus == OperationalStatus.Up)
+                if (item.NetworkInterfaceType == NetworkInterfaceType.Ethernet && item.OperationalStatus == OperationalStatus.Up)
                 {
                     foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
                     {
