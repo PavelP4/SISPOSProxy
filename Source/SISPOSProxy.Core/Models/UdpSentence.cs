@@ -10,7 +10,8 @@ namespace SISPOSProxy.Core.Models
     {
         public static readonly IDictionary<UdpSentenceType, string> SentenceTypeStrings = new Dictionary<UdpSentenceType, string>()
         {
-            [UdpSentenceType.PANSPT] = "$PANSPT,"
+            [UdpSentenceType.PANSPT] = "$PANSPT,",
+            [UdpSentenceType.PANSSY] = "$PANSSY,"
         };
         public static readonly IDictionary<UdpSentenceType, byte[]> SentenceTypeBytes;
 

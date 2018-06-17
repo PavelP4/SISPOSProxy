@@ -49,7 +49,11 @@
     <Compile Include="Caches\UdpPayloadCache.cs" />
     <Compile Include="Caches\UdpProcessCache.cs" />
     <Compile Include="Config\Settings.cs" />
+    <Compile Include="Enums\IlasstStatus.cs" />
+    <Compile Include="Enums\PosServerStatus.cs" />
     <Compile Include="Enums\SectorStatus.cs" />
+    <Compile Include="Enums\SilenceStatus.cs" />
+    <Compile Include="Enums\SystemStatus.cs" />
     <Compile Include="Enums\TagStatus.cs" />
     <Compile Include="Enums\UdfMessageType.cs" />
     <Compile Include="Enums\UdpSentenceType.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="Models\UdfPosMsg.cs" />
     <Compile Include="Models\UdfSecMsg.cs" />
     <Compile Include="Models\UdfTagMsg.cs" />
+    <Compile Include="Models\UdpPanSsy.cs" />
     <Compile Include="Models\UdpSentence.cs" />
     <Compile Include="Models\UdpPanSpt.cs" />
     <Compile Include="Proxy.cs" />

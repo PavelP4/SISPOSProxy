@@ -32,6 +32,8 @@ namespace SISPOSProxy.Core.Caches
             _secStatuses.Populate(SectorStatus.Undefined);
         }
 
+        #region Get / Set
+        
         public TagStatus GetTagStatus(int tagId)
         {
             lock (_tagLock)
@@ -69,14 +71,6 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
-        public int GetSectorTagsAmount(int sectorId)
-        {
-            lock (_tagLock)
-            {
-                return _tagSectors.Count(x => x == sectorId);
-            }
-        }
-
         public SectorStatus GetSectorStatus(int sectorId)
         {
             lock (_secLock)
@@ -92,6 +86,30 @@ namespace SISPOSProxy.Core.Caches
                 _secStatuses[sectorId] = status;
             }
         }
+
+        #endregion
+
+        #region Queries
+
+        public int GetSectorTagsAmount(int sectorId)
+        {
+            lock (_tagLock)
+            {
+                return _tagSectors.Count(x => x == sectorId);
+            }
+        }
+
+        public int GetSectorTagsAmount(int fromSectorId, int toSectorId)
+        {
+            lock (_tagLock)
+            {
+                return _tagSectors.Count(x => x >= fromSectorId && x <= toSectorId);
+            }
+        }
+
+        #endregion
+
+        #region Save from model
 
         public void Save(UdfTagMsg model)
         {
@@ -114,6 +132,10 @@ namespace SISPOSProxy.Core.Caches
             SetSectorStatus(model.SectorId, model.SectorStatus);
         }
 
+        #endregion
+
+        #region Init logic
+        
         public async Task InitAsync()
         {
             var t1 = InitTagsAsync();
@@ -192,5 +214,7 @@ namespace SISPOSProxy.Core.Caches
         {
             return transitionId == 0 ? SectorStatus.Ok : SectorStatus.Inactive;
         }
+
+        #endregion
     }
 }

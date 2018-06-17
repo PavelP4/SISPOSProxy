@@ -107,6 +107,11 @@ namespace SISPOSProxy.Core.Services
                     FixPANSPT(sptModel);
                     baseModel = sptModel;
                 }
+                if (UdpPanSsy.TryParse(smgt, out var ssyModel))
+                {
+                    FixPANSSY(ssyModel);
+                    baseModel = ssyModel;
+                }
                 else
                 {
                     OnlySaveResult(smgt, outStream);
@@ -140,6 +145,12 @@ namespace SISPOSProxy.Core.Services
         public void FixPANSPT(UdpPanSpt model)
         {
             model.TagsCount = _dbCache.GetSectorTagsAmount(model.SectorId);
+        }
+
+        public void FixPANSSY(UdpPanSsy model)
+        {
+            model.LoggedOnTagsAmount = _dbCache.GetSectorTagsAmount(1, 66);
+            model.MissedTagsAmount = _dbCache.GetSectorTagsAmount(66);
         }
 
         #endregion
