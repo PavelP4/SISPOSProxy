@@ -4,6 +4,8 @@
     {
         Undefined = 0,
         Ok = 1,
-        Mulfunction = 2
+        Mulfunction = 2,
+
+        Inactive = 20
     }
 }

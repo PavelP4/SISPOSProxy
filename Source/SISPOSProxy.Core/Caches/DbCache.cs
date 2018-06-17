@@ -195,7 +195,7 @@ namespace SISPOSProxy.Core.Caches
 
         private SectorStatus GetSectorStatusInitialValue(int transitionId)
         {
-            return transitionId == 0 ? SectorStatus.Ok : SectorStatus.Mulfunction;
+            return transitionId == 0 ? SectorStatus.Ok : SectorStatus.Inactive;
         }
     }
 }
