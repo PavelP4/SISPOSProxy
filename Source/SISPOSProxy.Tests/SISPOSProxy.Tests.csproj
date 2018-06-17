@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachesTests\DbCacheTests.cs" />
     <Compile Include="CachesTests\UdpPayloadCacheTests.cs" />
     <Compile Include="ExtentionsTests\ArrayExtTests.cs" />
     <Compile Include="Misc\UdpPacketReceiver.cs" />
