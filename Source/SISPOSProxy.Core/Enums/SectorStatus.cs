@@ -2,8 +2,8 @@
 {
     public enum SectorStatus
     {
-        Undefined = -1,
-        Ok = 0,
-        Mulfunction = 1
+        Undefined = 0,
+        Ok = 1,
+        Mulfunction = 2
     }
 }

@@ -17,7 +17,7 @@ namespace SISPOSProxy.Tests.SettingsTests
         {
             var settings = new Settings();
 
-            settings.Init().Wait();
+            settings.InitAsync().Wait();
 
             Assert.IsTrue(!string.IsNullOrEmpty(settings.Udf2ProxyNamedPipeName));
             Assert.IsTrue(settings.Udf2ProxyNamedPipeMaxServerInstances > 1);

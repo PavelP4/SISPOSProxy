@@ -2,9 +2,9 @@
 {
     public enum TagStatus
     {
-        Undefined = -1,
-        Ok = 0,
-        LoggedOff = 1,
-        Inactive = 2
+        Undefined = 0,
+        Ok = 1,
+        LoggedOff = 2,
+        Inactive = 3
     }
 }

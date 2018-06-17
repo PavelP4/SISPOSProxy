@@ -17,7 +17,7 @@ namespace SISPOSProxy.Tests.ServicesTests
 
         public DbReceiverTest()
         {
-            _settings.Init().Wait();
+            _settings.InitAsync().Wait();
         }
         
         [Test]

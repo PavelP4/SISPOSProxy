@@ -25,7 +25,7 @@ namespace SISPOSProxy.Core.Config
         #endregion
 
 
-        public async Task Init()
+        public async Task InitAsync()
         {
             var localIpAddress = NetHelper.GetLocalIPv4(NetworkInterfaceType.Ethernet);
 

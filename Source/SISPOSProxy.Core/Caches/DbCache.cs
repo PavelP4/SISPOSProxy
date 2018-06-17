@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using SISPOSProxy.Core.Enums;
 using SISPOSProxy.Core.Extentions;
+using SISPOSProxy.Core.Helpers;
 using SISPOSProxy.Core.Models;
 
 namespace SISPOSProxy.Core.Caches
@@ -37,11 +40,27 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
+        public void SetTagStatus(int tagId, TagStatus status)
+        {
+            lock (_tagLock)
+            {
+                _tagStatuses[tagId] = status;
+            }
+        }
+
         public int GetTagSector(int tagId)
         {
             lock (_tagLock)
             {
                 return _tagSectors[tagId];
+            }
+        }
+
+        public void SetTagSector(int tagId, int sectorId)
+        {
+            lock (_tagLock)
+            {
+                _tagSectors[tagId] = sectorId;
             }
         }
 
@@ -53,11 +72,19 @@ namespace SISPOSProxy.Core.Caches
             }
         }
 
-        public SectorStatus GetSectorStatus(int sectorId) {
-
+        public SectorStatus GetSectorStatus(int sectorId)
+        {
             lock (_secLock)
             {
                 return _secStatuses[sectorId];
+            }
+        }
+
+        public void SetSectorStatus(int sectorId, SectorStatus status)
+        {
+            lock (_secLock)
+            {
+                _secStatuses[sectorId] = status;
             }
         }
 
@@ -89,6 +116,86 @@ namespace SISPOSProxy.Core.Caches
             {
                 _secStatuses[model.SectorId] = model.SectorStatus;
             }
+        }
+
+        public async Task InitAsync()
+        {
+            var t1 = InitTagsAsync();
+            var t2 = InitSectorsAsync();
+
+            await Task.WhenAll(t1, t2);
+        }
+
+        public async Task InitTagsAsync()
+        {
+            using (var conn = DbConnection.NewInstance())
+            {
+                var sql = "SELECT id, status + 0 as statusIndex FROM tags";
+                var cmd = new MySqlCommand(sql, conn);
+
+                await conn.OpenAsync();
+
+                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection))
+                {
+                    while (reader.Read())
+                    {
+                        var tagId = reader.GetInt16(0);
+                        var tagStatus = (TagStatus)reader.GetInt32(1);
+
+                        SetTagSector(tagId, GetTagSectorInitialValue(tagStatus));
+                        SetTagStatus(tagId, tagStatus);
+                    }
+                }
+
+                await conn.CloseAsync();
+            }
+        }
+
+        public async Task InitSectorsAsync()
+        {
+            using (var conn = DbConnection.NewInstance())
+            {
+                var sql = "SELECT id, transition as statusIndex FROM sectors";
+                var cmd = new MySqlCommand(sql, conn);
+
+                await conn.OpenAsync();
+
+                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection))
+                {
+                    while (reader.Read())
+                    {
+                        var sectorId = reader.GetInt16(0);
+                        var transId = reader.GetInt16(2);
+                        
+                        SetSectorStatus(sectorId, GetSectorStatusInitialValue(transId));
+                    }
+                }
+
+                await conn.CloseAsync();
+            }
+        }
+
+        private int GetTagSectorInitialValue(TagStatus status)
+        {
+            switch (status)
+            {
+                case TagStatus.Ok:
+                    return 66;
+
+                case TagStatus.LoggedOff:
+                    return 67;
+
+                case TagStatus.Inactive:
+                    return 0;
+
+                default:
+                    return -1;
+            }
+        }
+
+        private SectorStatus GetSectorStatusInitialValue(int transitionId)
+        {
+            return transitionId == 0 ? SectorStatus.Ok : SectorStatus.Mulfunction;
         }
     }
 }
