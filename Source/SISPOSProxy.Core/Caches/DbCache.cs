@@ -139,7 +139,7 @@ namespace SISPOSProxy.Core.Caches
                 {
                     while (reader.Read())
                     {
-                        var tagId = reader.GetInt16(0);
+                        var tagId = reader.GetInt32(0);
                         var tagStatus = (TagStatus)reader.GetInt32(1);
 
                         SetTagSector(tagId, GetTagSectorInitialValue(tagStatus));
@@ -155,7 +155,7 @@ namespace SISPOSProxy.Core.Caches
         {
             using (var conn = DbConnection.NewInstance())
             {
-                var sql = "SELECT id, transition as statusIndex FROM sectors";
+                var sql = "SELECT id, transition FROM sectors";
                 var cmd = new MySqlCommand(sql, conn);
 
                 await conn.OpenAsync();
@@ -164,8 +164,8 @@ namespace SISPOSProxy.Core.Caches
                 {
                     while (reader.Read())
                     {
-                        var sectorId = reader.GetInt16(0);
-                        var transId = reader.GetInt16(2);
+                        var sectorId = reader.GetInt32(0);
+                        var transId = reader.GetInt32(1);
                         
                         SetSectorStatus(sectorId, GetSectorStatusInitialValue(transId));
                     }
