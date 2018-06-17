@@ -107,7 +107,7 @@ namespace SISPOSProxy.Core.Services
                     FixPANSPT(sptModel);
                     baseModel = sptModel;
                 }
-                if (UdpPanSsy.TryParse(smgt, out var ssyModel))
+                else if (UdpPanSsy.TryParse(smgt, out var ssyModel))
                 {
                     FixPANSSY(ssyModel);
                     baseModel = ssyModel;

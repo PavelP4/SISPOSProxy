@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SISPOSProxy.Core.Caches;
@@ -19,7 +20,7 @@ namespace SISPOSProxy.Tests.ServicesTests
     public class SISPOSTransmitterTests
     {
         private readonly Settings _settings = new Settings();
-        private readonly int[] _ports = {55554, 55555};
+        private readonly int[] _ports = {55004, 55005 };
 
         public SISPOSTransmitterTests()
         {
@@ -43,7 +44,7 @@ namespace SISPOSProxy.Tests.ServicesTests
                 Encoding.ASCII.GetBytes("$PANSPT,33,22,1*88\r\n$PANSPT,44,55,1*99\r\n"),
                 Encoding.ASCII.GetBytes("$PANSPT,44,55,1*77\r\n$PANSPT,11,22,1*55\r\n")
             };
-            var result = new byte[payloads.Length][];
+            var result = new byte[_ports.Length][];
 
             foreach (var payload in payloads)
             {
@@ -59,6 +60,8 @@ namespace SISPOSProxy.Tests.ServicesTests
                     tasks[i] = testReceiver.ReceiveAsync(_ports[i]);
                 }
                 
+                Thread.Sleep(100);
+
                 transmitter.Start();
 
                 Task.WaitAll(tasks, 1000);

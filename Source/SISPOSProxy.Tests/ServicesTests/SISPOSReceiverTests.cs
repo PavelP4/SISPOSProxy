@@ -19,7 +19,7 @@ namespace SISPOSProxy.Tests.ServicesTests
 
         public SISPOSReceiverTests()
         {
-            _settings.ListenPort = 55554;
+            _settings.ListenPort = 55504;
         }
 
         [Test]

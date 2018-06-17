@@ -13,6 +13,7 @@ namespace SISPOSProxy.Core.Services
     public class SISPOSTransmitter : BaseProcessService
     {
         private const int MessageSenderSleepTimeout = 1;
+        private const int MessageSendTimeout = 2;
 
         private readonly MessageCache _outputCache;
 
@@ -24,18 +25,17 @@ namespace SISPOSProxy.Core.Services
 
         public override void Start()
         {
-            if (!Settings.TransmitIpEndPoints.Any()) throw new Exception("The Destination endpoints are not identified");
-
-            foreach (var iepoint in Settings.TransmitIpEndPoints)
-            {
-                ServiceTasks.Add(Task.Factory.StartNew((o)=> RunSender(iepoint), Token, TaskCreationOptions.LongRunning));
-            }
+            ServiceTasks.Add(Task.Factory.StartNew(RunSender, Token, TaskCreationOptions.LongRunning));
         }
 
-        private void RunSender(IPEndPoint iepoint)
+        private void RunSender(object obj)
         {
+            if (!Settings.TransmitIpEndPoints.Any()) throw new Exception("The Destination endpoints are not identified");
+
             using (var client = new UdpClient())
             {
+                var tasks = new Task[Settings.TransmitIpEndPoints.Count];
+
                 while (!Token.IsCancellationRequested)
                 {
                     var nextmsg = _outputCache.Pop();
@@ -50,7 +50,12 @@ namespace SISPOSProxy.Core.Services
                         continue;
                     }
 
-                    client.Send(nextmsg, nextmsg.Length, iepoint);
+                    for (int i = 0; i < tasks.Length; i++)
+                    {
+                        tasks[i] = client.SendAsync(nextmsg, nextmsg.Length, Settings.TransmitIpEndPoints[i]);
+                    }
+
+                    Task.WaitAll(tasks, MessageSendTimeout, Token);
                 }
             }
         }

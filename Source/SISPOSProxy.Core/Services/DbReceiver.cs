@@ -15,7 +15,6 @@ namespace SISPOSProxy.Core.Services
     {
         private const int MaxMessageSize = 12;
         private const int ProcessMessagesSleepTimeout = 1;
-        private const int ProcessMessagesUnhandledPercent = 25;
 
         private readonly DbCache _dbCache;
         private readonly MessageCache _inputCache;
@@ -31,7 +30,7 @@ namespace SISPOSProxy.Core.Services
         public override void Start()
         {
             Run(ReceiveMessages, Settings.Udf2ProxyNamedPipeMaxServerInstances);
-            Run(ProcessMessages, Settings.Udf2ProxyNamedPipeMaxServerInstances);
+            Run(ProcessMessages, 1);
         }
 
         private void Run(Action<object> action, int count)
@@ -70,7 +69,7 @@ namespace SISPOSProxy.Core.Services
 
                 if (nextmsg.Length == 0)
                 {
-                    if ((_inputCache.Count / Settings.Udf2ProxyNamedPipeMaxServerInstances) * 100 < ProcessMessagesUnhandledPercent)
+                    if (_inputCache.Count == 0)
                     {
                         Thread.Sleep(ProcessMessagesSleepTimeout);
                     }

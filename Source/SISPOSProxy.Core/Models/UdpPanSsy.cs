@@ -32,7 +32,7 @@ namespace SISPOSProxy.Core.Models
             int prevSep = -1;
             int curSep;
             int valueNum = 0;
-            int value = 0;
+            int value;
 
             for (int i = 0, j = input.Offset + i; i < input.Count; i++, j++)
             {
@@ -40,7 +40,11 @@ namespace SISPOSProxy.Core.Models
                 {
                     curSep = j;
 
-                    if (prevSep == -1) continue;
+                    if (prevSep == -1)
+                    {
+                        prevSep = curSep;
+                        continue;
+                    }
 
                     valueNum++;
 
@@ -69,6 +73,8 @@ namespace SISPOSProxy.Core.Models
                         case 7:
                             result.IlasstStatus = (IlasstStatus)value;
                             break;
+                        default:
+                            throw new ArgumentException("Unexpected input value");
                     }
 
                     prevSep = curSep;

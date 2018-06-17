@@ -100,6 +100,8 @@ namespace SISPOSProxy.Core.Models
                         break;
                     }
                 }
+
+                if (result != UdpSentenceType.Undefined) break;
             }
 
             return result;

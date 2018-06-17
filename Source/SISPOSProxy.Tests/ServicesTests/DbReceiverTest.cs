@@ -17,7 +17,9 @@ namespace SISPOSProxy.Tests.ServicesTests
 
         public DbReceiverTest()
         {
-            _settings.InitAsync().Wait();
+            //_settings.InitAsync().Wait();
+            _settings.Udf2ProxyNamedPipeName = "TestProxyNamedPipe";
+            _settings.Udf2ProxyNamedPipeMaxServerInstances = 4;
         }
         
         [Test]

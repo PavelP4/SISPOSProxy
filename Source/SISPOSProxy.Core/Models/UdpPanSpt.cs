@@ -23,32 +23,47 @@ namespace SISPOSProxy.Core.Models
 
             if (input.Array == null || GetSentenceType(input) != result.Type) return false;
 
-            var sepCount = 0;
-            var seps = new int[4];
+            int prevSep = -1;
+            int curSep;
+            int valueNum = 0;
+            int value;
 
             for (int i = 0, j = input.Offset + i; i < input.Count; i++, j++)
             {
                 if (input.Array[j] == SentenceSeparator || input.Array[j] == SentenceChecksumSeparator)
                 {
-                    sepCount++;
-                    seps[sepCount - 1] = j;
+                    curSep = j;
 
-                    switch (sepCount)
+                    if (prevSep == -1)
                     {
-                        case 2: // Sector
-                            result.SectorId = input.Array.ConvertToIntAsString(seps[0] + 1, seps[1] - seps[0] - 1);
-                            break;
-                        case 3: // Number of tags
-                            result.TagsCount = input.Array.ConvertToIntAsString(seps[1] + 1, seps[2] - seps[1] - 1);
-                            break;
-                        case 4: // Sector status
-                            result.SectorStatus = (SectorStatus)input.Array.ConvertToIntAsString(seps[2] + 1, seps[3] - seps[2] - 1);
-                            break;
+                        prevSep = curSep;
+                        continue;
                     }
+
+                    valueNum++;
+
+                    value = input.Array.ConvertToIntAsString(prevSep + 1, curSep - prevSep - 1);
+
+                    switch (valueNum)
+                    {
+                        case 1: 
+                            result.SectorId = value;
+                            break;
+                        case 2: 
+                            result.TagsCount = value;
+                            break;
+                        case 3:
+                            result.SectorStatus = (SectorStatus)value;
+                            break;
+                        default:
+                            throw new ArgumentException("Unexpected input value");
+                    }
+
+                    prevSep = curSep;
                 }
             }
 
-            return true;
+            return valueNum == 3;
         }
 
         public override byte[] GetSentenceData()
