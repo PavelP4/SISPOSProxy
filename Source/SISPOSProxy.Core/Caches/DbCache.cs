@@ -44,6 +44,11 @@ namespace SISPOSProxy.Core.Caches
         {
             lock (_tagLock)
             {
+                if (_tagStatuses[tagId] != status)
+                {
+                    _tagSectors[tagId] = GetTagSectorInitialValue(status);
+                }
+
                 _tagStatuses[tagId] = status;
             }
         }
@@ -92,30 +97,21 @@ namespace SISPOSProxy.Core.Caches
         {
             if (model.TagId > MaxTagAmount) return;
 
-            lock (_tagLock)
-            {
-                _tagStatuses[model.TagId] = model.TagStatus;
-            }
+            SetTagStatus(model.TagId, model.TagStatus);
         }
 
         public void Save(UdfPosMsg model)
         {
             if (model.TagId > MaxTagAmount) return;
 
-            lock (_tagLock)
-            {
-                _tagSectors[model.TagId] = model.SectorId;
-            }
+            SetTagSector(model.TagId, model.SectorId);
         }
 
         public void Save(UdfSecMsg model)
         {
             if (model.SectorId > MaxSecAmount) return;
 
-            lock (_secLock)
-            {
-                _secStatuses[model.SectorId] = model.SectorStatus;
-            }
+            SetSectorStatus(model.SectorId, model.SectorStatus);
         }
 
         public async Task InitAsync()
@@ -141,8 +137,7 @@ namespace SISPOSProxy.Core.Caches
                     {
                         var tagId = reader.GetInt32(0);
                         var tagStatus = (TagStatus)reader.GetInt32(1);
-
-                        SetTagSector(tagId, GetTagSectorInitialValue(tagStatus));
+                       
                         SetTagStatus(tagId, tagStatus);
                     }
                 }
