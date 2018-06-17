@@ -330,5 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # Release
-Release/*
-!Release/*.dll
+!/Release/*
