@@ -44,7 +44,7 @@ namespace SISPOSProxy.Tests.IntegrationTests
         public void RepairMessage()
         {
             var inputWrong = Encoding.ASCII.GetBytes("$PANSPT,33,1,1*24\r\n$PANSPT,35,0,1*23\r\n$PANSSY,0,2,1,1,1,0,0*19\r\n");
-            var inputOk = Encoding.ASCII.GetBytes(""); // set it after first result will be received 
+            var inputOk = Encoding.ASCII.GetBytes("$PANSPT,33,0,1*25\r\n$PANSPT,35,0,1*23\r\n$PANSSY,0,2,1,1,450,450,0*18\r\n"); // set it after first result will be received 
 
             var t = _udpReceiver.ReceiveAsync(55555);
 
@@ -54,8 +54,11 @@ namespace SISPOSProxy.Tests.IntegrationTests
 
             t.Wait(100);
 
+            var resultStr = Encoding.ASCII.GetString(t.Result);
+
             Assert.IsNotNull(t.Result);
             Assert.IsTrue(!t.Result.ContainsSubArray(inputWrong), "Wrong message was not changed");
+            //Assert.IsTrue(t.Result.ContainsSubArray(inputOk), "Wrong message was not corrected");  // uncomment after init inputOk
         }
     }
 }
