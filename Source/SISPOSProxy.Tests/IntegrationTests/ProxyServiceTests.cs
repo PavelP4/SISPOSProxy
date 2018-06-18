@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Text;
 using System.Threading;
 using NUnit.Framework;
@@ -59,6 +60,8 @@ namespace SISPOSProxy.Tests.IntegrationTests
             Assert.IsNotNull(t.Result);
             Assert.IsTrue(!t.Result.ContainsSubArray(inputWrong), "Wrong message was not changed");
             //Assert.IsTrue(t.Result.ContainsSubArray(inputOk), "Wrong message was not corrected");  // uncomment after init inputOk
+
+            Console.Out.WriteLine($"Result: \n{resultStr}");
         }
     }
 }

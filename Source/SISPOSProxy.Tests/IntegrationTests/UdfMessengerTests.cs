@@ -16,6 +16,7 @@ namespace SISPOSProxy.Tests.IntegrationTests
 
         public UdfMessengerTests()
         {
+            _settings = new Settings();
             _settings.Udf2ProxyNamedPipeName = "SIS_POS_UDF_Messenger";
         }
 
