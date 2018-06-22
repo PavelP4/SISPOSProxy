@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4077166D-B0E3-4088-A82B-086DB862DD67}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SISPOSProxy.Core</RootNamespace>
+    <AssemblyName>SISPOSProxy.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caches\DbCache.cs" />
+    <Compile Include="Caches\MessageCache.cs" />
+    <Compile Include="Caches\UdpPayloadCache.cs" />
+    <Compile Include="Caches\UdpProcessCache.cs" />
+    <Compile Include="Config\Settings.cs" />
+    <Compile Include="Enums\IlasstStatus.cs" />
+    <Compile Include="Enums\PosServerStatus.cs" />
+    <Compile Include="Enums\SectorStatus.cs" />
+    <Compile Include="Enums\SilenceStatus.cs" />
+    <Compile Include="Enums\SystemStatus.cs" />
+    <Compile Include="Enums\TagStatus.cs" />
+    <Compile Include="Enums\UdfMessageType.cs" />
+    <Compile Include="Enums\UdpSentenceType.cs" />
+    <Compile Include="Extentions\ArrayExt.cs" />
+    <Compile Include="Extentions\NamedPipeExt.cs" />
+    <Compile Include="Extentions\UdpClientExt.cs" />
+    <Compile Include="Helpers\DbConnection.cs" />
+    <Compile Include="Helpers\NetHelper.cs" />
+    <Compile Include="Models\UdfMessage.cs" />
+    <Compile Include="Models\UdfPosMsg.cs" />
+    <Compile Include="Models\UdfSecMsg.cs" />
+    <Compile Include="Models\UdfTagMsg.cs" />
+    <Compile Include="Models\UdpPanSsy.cs" />
+    <Compile Include="Models\UdpSentence.cs" />
+    <Compile Include="Models\UdpPanSpt.cs" />
+    <Compile Include="Proxy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseProcessService.cs" />
+    <Compile Include="Services\DbReceiver.cs" />
+    <Compile Include="Services\SISPOSDataProcessor.cs" />
+    <Compile Include="Services\SISPOSReceiver.cs" />
+    <Compile Include="Services\UdpRepairService.cs" />
+    <Compile Include="Services\SISPOSTransmitter.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)\..\Release\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
